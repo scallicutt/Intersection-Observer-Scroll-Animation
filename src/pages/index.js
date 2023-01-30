@@ -1,13 +1,16 @@
+import {useRef, useEffect, useState} from 'react'
+import { useInView } from 'react-intersection-observer';
 import Head from 'next/head'
-
 import Layout from '@components/Layout';
 import Section from '@components/Section';
 import Container from '@components/Container';
 import Button from '@components/Button';
-
 import styles from '@styles/Home.module.scss'
 
 export default function Home() {
+  const { ref: myRef, inView: myElementIsVisible } = useInView()
+  const { ref: rocketRef, inView: rocketIsVisible } = useInView()
+
   return (
     <Layout>
       <Head>
@@ -106,17 +109,21 @@ export default function Home() {
             Magic 🪄
           </h2>
 
-          <p>🚀</p>
+          <p ref={rocketRef}>
+            <span className={`${styles.rocket} ${rocketIsVisible ? styles.animateRocket : ''}`}>
+            🚀
+            </span>
+          </p>
         </Container>
       </Section>
 
       <Section backgroundColor="secondary">
         <Container>
-          <h2 className={styles.heading}>
+          <h2 ref={myRef} className={styles.heading}>
             Have you scrolled down here yet? 🧐
           </h2>
 
-          <p>IDK 🤷‍♂️</p>
+          <p>{ myElementIsVisible ? 'Yes' : 'No'}</p>
         </Container>
       </Section>
 
